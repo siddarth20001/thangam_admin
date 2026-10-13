@@ -3,7 +3,7 @@ import { Moon, Sun } from 'lucide-react'
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState<'light' | 'dark'>(() => document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light')
-  // Only an explicit click is saved, so until then the panel follows the system setting.
+  // Start in light mode unless the user has explicitly saved a theme choice.
   function toggle() {
     const next = theme === 'dark' ? 'light' : 'dark'
     document.documentElement.dataset.theme = next

@@ -7,7 +7,7 @@
         let theme;
         try { theme = localStorage.getItem('thangam-admin-theme-v3'); } catch {}
         document.documentElement.dataset.theme = theme === 'light' || theme === 'dark'
-          ? theme : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          ? theme : 'light';
       })();
     </script>
     <link rel="icon" type="image/png" href="/thangam-logo.png" />
