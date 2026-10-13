@@ -41,7 +41,11 @@ export default function App() {
   useEffect(()=>{
     if (!supabase) return
     const client = supabase
-    const {data:{subscription}}=client.auth.onAuthStateChange((_event,session)=>{setSignedIn(!!session);setReady(false);setError('')})
+    const {data:{subscription}}=client.auth.onAuthStateChange((_event,session)=>{
+      setSignedIn(!!session)
+      // Session refreshes also emit SIGNED_IN; keep an already loaded catalog visible.
+      if (!session) { setReady(false); setError('') }
+    })
     client.auth.getSession().then(({data,error})=>{if(error)setError(error.message);setSignedIn(!!data.session)})
     return ()=>subscription.unsubscribe()
   },[])
