@@ -147,7 +147,7 @@ const groups: [string, boolean, string][] = [
 150|Super 6 (Deluxe Match Box)|110
 151|Blooms Matches (Mega Match Box)|140
 152|Nokia (Lamp Match Box)|220`],
-['Roll Cap and Paper Bomb Items',true,`153|Roll Cap|100
+['Roll Cap and Paper Bomb Items',false,`153|Roll Cap|100
 156|Ring Cap|10
 157|Money Money Paper Bomb (Currency Note)|450
 158|Adiyal Paper Bomb (1/4kg -1Pce)|80
