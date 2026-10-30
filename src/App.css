@@ -243,3 +243,10 @@ main.login{width:100%;max-width:none;margin:0;min-height:100vh;min-height:100svh
 .login-brand-row .theme-toggle{flex-shrink:0}
 @media(max-width:480px){.login form{padding:26px 22px}.login input{font-size:16px;padding:12px}.login .brand-logo img{max-width:200px}.login h1{font-size:25px;margin-top:28px}.login p{font-size:13px}.login .primary{min-height:44px;font-size:14px}}
 @media(max-height:550px){main.login{place-items:start center}.login h1{margin-top:20px}}
+
+.order-row{cursor:pointer}.order-link{background:none;border:0;padding:0;font:inherit;font-weight:700;color:inherit;cursor:pointer;text-decoration:underline;text-decoration-color:transparent}.order-link:hover,.order-link:focus-visible{text-decoration-color:currentColor}
+.order-modal{width:640px;max-width:100%}.order-modal .modal-heading small{display:block;margin-top:4px;color:var(--muted)}
+.order-customer{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:16px;border:1px solid var(--border-soft);border-radius:10px;margin-bottom:20px}.order-customer span{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}.order-customer strong,.order-customer small{display:block}.order-customer small{margin-top:4px}.order-customer p{margin:0}
+.order-items-heading{font-size:15px;margin:0 0 10px}.order-items td small{display:block;margin-top:3px;color:var(--muted)}.order-items .price{white-space:nowrap}
+.order-total{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border-soft);padding-top:16px;margin-top:12px}.order-total strong{font-size:18px}
+@media(max-width:700px){.order-customer{grid-template-columns:1fr}.order-modal{padding:20px}}
