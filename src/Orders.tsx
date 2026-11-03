@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { Search, ShoppingBag, RefreshCw, X } from 'lucide-react'
+import { Download, Search, ShoppingBag, RefreshCw, X } from 'lucide-react'
 import { supabase } from './lib/supabase'
+import { orderPdf } from './lib/orderPdf'
 
 type Order = { id: string; order_number: number; customer_name: string; customer_phone: string; customer_email: string | null; total: number; status: string; created_at: string; delivery_address: string | null; delivery_city: string | null; delivery_pincode: string | null }
 type OrderItem = { id: string; product_name: string; unit: string; quantity: number; original_price: number; discount_percent: number; unit_price: number; line_total: number }
@@ -19,6 +20,7 @@ export default function Orders() {
   const [items, setItems] = useState<OrderItem[]>([])
   const [itemsLoading, setItemsLoading] = useState(false)
   const [itemsError, setItemsError] = useState('')
+  const [pdfBusy, setPdfBusy] = useState(false)
   const revision = useRef(0)
   const itemsRequest = useRef(0)
   const saving = useRef(false)
@@ -65,6 +67,17 @@ export default function Orders() {
     } catch (error) { if (request === itemsRequest.current) setItemsError((error as Error).message) }
     finally { if (request === itemsRequest.current) setItemsLoading(false) }
   }
+  async function downloadPdf(order: Order) {
+    setPdfBusy(true); setItemsError('')
+    try {
+      const pdf = await orderPdf(order, items)
+      const url = URL.createObjectURL(new Blob([pdf.bytes as BlobPart], { type: 'application/pdf' }))
+      const link = document.createElement('a')
+      link.href = url; link.download = pdf.filename; link.click()
+      setTimeout(() => URL.revokeObjectURL(url), 1000)
+    } catch { setItemsError('The PDF could not be created. Please try again.') }
+    finally { setPdfBusy(false) }
+  }
   useEffect(() => {
     if (!selected) return
     const close = (event: KeyboardEvent) => { if (event.key === 'Escape') setSelected(null) }
@@ -94,6 +107,7 @@ export default function Orders() {
         <h3 className="order-items-heading">{items.length} {items.length === 1 ? 'product' : 'products'} · {items.reduce((sum, item) => sum + item.quantity, 0)} items</h3>
         <div className="table-scroll"><table className="order-items"><thead><tr><th>PRODUCT</th><th>QTY</th><th>PRICE</th><th>TOTAL</th></tr></thead><tbody>{items.map(item => <tr key={item.id}><td><strong>{item.product_name}</strong><small>{item.unit}</small></td><td>{item.quantity}</td><td>{formatMoney(item.unit_price)}{item.discount_percent > 0 && <small><s>{formatMoney(item.original_price)}</s> {item.discount_percent}% off</small>}</td><td className="price">{formatMoney(item.line_total)}</td></tr>)}</tbody></table></div>
         <div className="order-total"><span>Order total</span><strong>{formatMoney(selected.total)}</strong></div>
+        <div className="order-actions"><button type="button" className="secondary" disabled={pdfBusy || !items.length} onClick={() => void downloadPdf(selected)}><Download size={16}/>{pdfBusy ? 'Preparing PDF…' : 'Download PDF'}</button></div>
       </>}
     </div></div>}
   </section>
